@@ -1,51 +1,19 @@
-import axios from 'axios';
 import React, {useState, useEffect, useRef} from 'react';
-import {useDispatch, useSelector} from 'react-redux'
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator
 } from 'react-native';
-import {Button} from '../../components/inputs';
-import { apis } from '../../constants';
-import { setLoading, setUserDetails } from '../../redux/actions/userActions';
+import {Button} from '../components/inputs';
 
 const Profile = () => {
-  const dispatch = useDispatch();
-  const {isLoading, userDetails} = useSelector(state => state.userReducer)
-
-  const [email, setEmail] = useState('');
+  const [number, setNumber] = useState('');
   const [password, setPassword] = useState('');
+  const onPress = () => setPassword(password);
 
-  const login = async () => {
-    if(!email) {
-      alert('Please enter email');
-      return;
-    }
-    if(!password) {
-      alert('Please enter password');
-    }
-    
-    try {
-      dispatch(setLoading(true))
-
-      const {data} = await axios.post(apis.baseUrl + 'authentication', {
-        email, password
-      })
-
-      console.log('..data', data)
-      dispatch(setUserDetails(data));
-
-    } catch (error) {
-      console.log('...Error in login', error?.response?.data ?? error);
-    } finally {
-      dispatch(setLoading(false))
-
-    }
-  };
+  const login = () => {};
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -55,10 +23,9 @@ const Profile = () => {
 
       <TextInput
         style={styles.input}
-        onChangeText={setEmail}
+        onChangeText={setNumber}
         placeholder="Enter your email"
-        autoCapitalize='none'
-        value={email}></TextInput>
+        value={number}></TextInput>
 
       <Text style={styles.Email1}>Password</Text>
       <TextInput
@@ -71,15 +38,12 @@ const Profile = () => {
         Login
       </Button>
 
-{isLoading && (
-      <ActivityIndicator size='large' />)}
-
-      <TouchableOpacity style={styles.button1}>
+      <TouchableOpacity style={styles.button1} onPress={onPress}>
         <Text style={{flexDirection: 'row'}}>
           Forgot password? <Text style={{color: 'orange'}}>New password</Text>
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button2}>
+      <TouchableOpacity style={styles.button2} onPress={onPress}>
         <Text style={{flexDirection: 'row'}}>
           Don't have an account? <Text style={{color: 'orange'}}>Sign up</Text>
         </Text>
