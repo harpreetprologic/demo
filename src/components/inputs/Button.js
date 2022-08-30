@@ -6,11 +6,17 @@ import {Text, Button as NBButton, Box} from 'native-base';
 import React from 'react';
 import colors from '../../constants/colors';
 
-export default function Button({children, variant = 'primary', onPress}) {
+export default function Button({
+  children,
+  variant = 'primary',
+  onPress,
+  textStyle,
+  ...rest
+}) {
   const getBackgroundColor = () => {
     switch (variant) {
       case 'primary':
-        return colors.danger;
+        return '#3498eb';
       case 'text':
         return colors.white;
       default:
@@ -21,7 +27,7 @@ export default function Button({children, variant = 'primary', onPress}) {
   const getTextColor = () => {
     switch (variant) {
       case 'primary':
-        return colors.black;
+        return '#fff';
       case 'text':
         return colors.black;
       default:
@@ -30,8 +36,14 @@ export default function Button({children, variant = 'primary', onPress}) {
   };
 
   return (
-    <NBButton my={3} backgroundColor={getBackgroundColor()} onPress={onPress}>
-      <Text color={getTextColor()}>{children}</Text>
+    <NBButton
+      my={3}
+      backgroundColor={getBackgroundColor()}
+      onPress={onPress}
+      {...rest}>
+      <Text color={getTextColor()} style={textStyle}>
+        {children}
+      </Text>
     </NBButton>
   );
 }

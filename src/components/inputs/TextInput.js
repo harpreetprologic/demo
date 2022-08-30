@@ -3,7 +3,7 @@
  */
 import {StyleSheet, View} from 'react-native';
 import {Text, Input, Box} from 'native-base';
-import React from 'react';
+import React, {useRef} from 'react';
 
 export default function TextInput({
   label,
@@ -12,10 +12,13 @@ export default function TextInput({
   placeholder,
   secureTextEntry,
 }) {
+  const inputRef = useRef(null);
+  console.log('...inputRef: ', inputRef);
   return (
     <Box my={2}>
       <Text>{label}</Text>
       <Input
+        ref={inputRef}
         mt={2}
         value={value}
         onChangeText={onChangeText}
