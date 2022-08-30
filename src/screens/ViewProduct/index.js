@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, ActivityIndicator} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
+import {apis} from '../../constants';
 
 const ViewProduct = ({route}) => {
   const {_id} = route.params;
@@ -14,15 +15,12 @@ const ViewProduct = ({route}) => {
   const getProduct = async () => {
     setLoading(true);
     try {
-      const {data} = await axios.get(
-        `http://192.168.1.238:5500/api/products/${_id}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userDetails.token}`,
-          },
+      const {data} = await axios.get(`${apis.baseUrl}/products/${_id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userDetails.token}`,
         },
-      );
+      });
 
       console.log('...data', data);
 

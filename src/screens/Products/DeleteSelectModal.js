@@ -22,7 +22,7 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {apis} from '../../constants';
 
-const DeleteModal = ({onClose, deleteId}) => {
+const DeleteSelectModal = ({onClose, deleteId1}) => {
   const {userDetails} = useSelector(state => state.userReducer);
 
   const [isLoading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ const DeleteModal = ({onClose, deleteId}) => {
     setLoading(true);
     try {
       const {data} = await axios.delete(
-        `${apis.baseUrl}/products/${deleteId}`,
+        `${apis.baseUrl}/products/${deleteId1}`,
         {
           Authorization: `Bearer ${userDetails.token}`,
         },
@@ -49,7 +49,7 @@ const DeleteModal = ({onClose, deleteId}) => {
   };
 
   return (
-    <Modal isOpen={!!deleteId} onClose={onClose}>
+    <Modal isOpen={!!deleteId1} onClose={onClose}>
       <Modal.Content maxWidth="400px">
         <Modal.CloseButton />
         <Modal.Header>Delete</Modal.Header>
@@ -93,6 +93,6 @@ const DeleteModal = ({onClose, deleteId}) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteSelectModal;
 
 const styles = StyleSheet.create({});

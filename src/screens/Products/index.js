@@ -18,6 +18,8 @@ import axios from 'axios';
 import DeleteModal from './DeleteModal';
 
 import {Button} from '../../components/inputs';
+import DeleteSelectModal from './DeleteSelectModal';
+import {apis} from '../../constants';
 
 // const Products = () => {
 export default function Products({}) {
@@ -26,15 +28,17 @@ export default function Products({}) {
   const {userDetails} = useSelector(state => state.userReducer);
   const [isLoading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
-
+  const [showModal, setShowModal] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedIds1, setSelectedIds1] = useState([]);
 
   const [deleteId, setDeleteId] = useState(null);
+  const [deleteId1, setDeleteId1] = useState(null);
 
   const getProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const {data} = await axios.get('http://192.168.1.238:5500/api/products', {
+      const {data} = await axios.get(`${apis.baseUrl}/products`, {
         headers: {
           Authorization: `Bearer ${userDetails?.token}`,
         },
@@ -109,6 +113,13 @@ export default function Products({}) {
 
   return (
     <View style={{flex: 1}}>
+      <DeleteSelectModal
+        deleteId1={deleteId1}
+        onClose={() => {
+          getProducts();
+          setDeleteId1(null);
+        }}
+      />
       <DeleteModal
         deleteId={deleteId}
         onClose={() => {
@@ -140,8 +151,10 @@ export default function Products({}) {
           }}>
           Add Product
         </Button>
+
+        {/* ////// */}
         {!!selectedIds.length && (
-          <Button onPress={() => setDeleteId1(_id)} style={{marginLeft: 10}}>
+          <Button onPress={() => setDeleteId(_id1)} style={{marginLeft: 10}}>
             Delete Selected
           </Button>
         )}

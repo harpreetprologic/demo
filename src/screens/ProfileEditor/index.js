@@ -1,33 +1,40 @@
-import { StyleSheet, useWindowDimensions, Text } from 'react-native';
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import {StyleSheet, useWindowDimensions, Text} from 'react-native';
+import React, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {TabView, SceneMap} from 'react-native-tab-view';
 
 import BasicDetailsTab from './BasicDetailsTab';
 import BioDetailsTab from './BioDetailsTab';
 import OtherDetailsTab from './OtherDetailsTab';
-import { View } from 'native-base';
+import {View} from 'native-base';
 import axios from 'axios';
-import { setUserDetails } from '../../redux/actions/userActions';
+import {setUserDetails} from '../../redux/actions/userActions';
+import {apis} from '../../constants';
 
 export default function ProfileEditor() {
   const dispatch = useDispatch();
 
-  const { userDetails } = useSelector(state => state.userReducer);
+  const {userDetails} = useSelector(state => state.userReducer);
 
   // Basic Details
   const [firstName, setFirstName] = useState(userDetails.firstName ?? '');
   const [lastName, setLastName] = useState(userDetails.lastName ?? '');
   const [gender, setGender] = useState(userDetails.gender ?? '');
-  const [dateOfBirth, setDateOfBirth] = useState(userDetails.dateOfBirth ? new Date(userDetails.dateOfBirth) : new Date());
+  const [dateOfBirth, setDateOfBirth] = useState(
+    userDetails.dateOfBirth ? new Date(userDetails.dateOfBirth) : new Date(),
+  );
 
   // Bio Details
   const [height, setHeight] = useState(userDetails.height ?? '');
   const [weight, setWeight] = useState(userDetails.weight ?? '');
 
   // Other Details
-  const [identification, setIdentification] = useState(userDetails.identification ?? '');
-  const [identificationType, setIdentificationType] = useState(userDetails.identificationType ?? '');
+  const [identification, setIdentification] = useState(
+    userDetails.identification ?? '',
+  );
+  const [identificationType, setIdentificationType] = useState(
+    userDetails.identificationType ?? '',
+  );
   const [country, setCountry] = useState(userDetails.country ?? '');
   const [state, setState] = useState(userDetails.state ?? '');
   const [city, setCity] = useState(userDetails.city ?? '');
@@ -83,10 +90,10 @@ export default function ProfileEditor() {
     console.log('..data', JSON.stringify(body, null, 2));
 
     try {
-      const { data } = await axios.put('http://192.168.1.238:5500/api/user', body, {
+      const {data} = await axios.put(`${apis.baseUrl}/user`, body, {
         headers: {
-          'Authorization': `Bearer ${userDetails.token}`
-        }
+          Authorization: `Bearer ${userDetails.token}`,
+        },
       });
 
       console.log('..result', data);
@@ -104,12 +111,12 @@ export default function ProfileEditor() {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'basic', title: 'Basic Details' },
-    { key: 'bio', title: 'Bio Details' },
-    { key: 'other', title: 'Other Details' },
+    {key: 'basic', title: 'Basic Details'},
+    {key: 'bio', title: 'Bio Details'},
+    {key: 'other', title: 'Other Details'},
   ]);
 
-  const renderScene = ({ route, jumpTo }) => {
+  const renderScene = ({route, jumpTo}) => {
     switch (route.key) {
       case 'basic':
         return (
@@ -154,14 +161,12 @@ export default function ProfileEditor() {
     }
   };
 
-
   return (
     <TabView
-      navigationState={{ index, routes }}
+      navigationState={{index, routes}}
       renderScene={renderScene}
       onIndexChange={setIndex}
-      initialLayout={{ width: layout.width }}
-
+      initialLayout={{width: layout.width}}
     />
   );
 }

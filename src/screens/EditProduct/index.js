@@ -10,7 +10,8 @@ import {Button} from '../../components/inputs';
 // import {format} from 'date-fns';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useNavigation} from '@react-navigation/native';
-import api from '../../utils/api';
+// import api from '../../utils/api';
+import {apis} from '../../constants';
 import axios from 'axios';
 
 export default function EditProduct({route}) {
@@ -26,15 +27,12 @@ export default function EditProduct({route}) {
 
   const getProduct = async () => {
     try {
-      const {data} = await axios.get(
-        `http://192.168.1.238:5500/api/products/${_id}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userDetails.token}`,
-          },
+      const {data} = await axios.get(`${apis.baseUrl}/products/${_id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userDetails.token}`,
         },
-      );
+      });
 
       console.log('...data', data);
 
@@ -65,7 +63,7 @@ export default function EditProduct({route}) {
       if (_id) {
         // Editing Product
         const {data} = await axios.put(
-          `http://192.168.1.238:5500/api/products/${_id}`,
+          `${apis.baseUrl}/products/${_id}`,
           body,
           {
             headers: {
@@ -77,16 +75,12 @@ export default function EditProduct({route}) {
         console.log('..data', data);
       } else {
         // Creating Product
-        const {data} = await axios.post(
-          'http://192.168.1.238:5500/api/products',
-          body,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${userDetails.token}`,
-            },
+        const {data} = await axios.post(`${apis.baseUrl}/products`, body, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userDetails.token}`,
           },
-        );
+        });
         console.log('..data', data);
         alert(data.message);
       }
